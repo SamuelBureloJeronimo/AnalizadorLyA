@@ -9,8 +9,8 @@ public class AnalizadorLexico {
 
     //ArrayList<Token> tokens = new ArrayList();
     ArrayList<Token> tokensAnalizados = new ArrayList();
-    ArrayList<Token> grupos = new ArrayList();
-    ArrayList<String> PrimeraCapa = new ArrayList();
+    ArrayList<Derivaciones> Uniones = new ArrayList();
+    OperacionesLR op = new OperacionesLR();
 
     AnalizadorLexico() {
         /*
@@ -25,9 +25,20 @@ public class AnalizadorLexico {
         String cadena = "1^2.Ɛ.4.(a|b)^+.x^**.Ɛ^*";
         String cadena2 = "t^*.a^4.Ɛ.(4^**|c^2).r^*.(1^*)";
         String cadena3 = "1^2.Ɛ.((a^*)|(b^*))^+.x^**.(i|o)";
-        String cadena4 = "(r^**|I^+).1^2.yt.Ɛ^+.((a^*)|(b^*))^+.Ɛ.x^**.(i|o)";
+        String cadena4 = "(r^**|I^+).1^2.yt.Ɛ^+.((a^*)|(b^*))^+.Ɛ.x^**.(i|o)^2";
         analizarCadena(cadena4);
         resolverCadena(cadena4);
+        ArrayList c1 = new ArrayList();
+        c1.add("Ɛ");
+        c1.add("1");
+        c1.add("11");
+        c1.add("111");
+        ArrayList c2 = new ArrayList();
+        c2.add("Ɛ");
+        c2.add("x");
+        c2.add("xx");
+        c2.add("xxx");
+        System.out.println(op.concatenarCadenas(c1, c2));
     }
 
     public static void main(String[] args) {
@@ -45,20 +56,53 @@ public class AnalizadorLexico {
             if (tokensAnalizados.get(i).getCateg().equalsIgnoreCase("Identificador") || tokensAnalizados.get(i).getLex().equalsIgnoreCase("Ɛ")) {
                 if (tokensAnalizados.get(i + 1).getLex().substring(0, 1).equals("^") && (i + 1) < tokensAnalizados.size()) {
                     System.out.println("** 2do Orden: " + tokensAnalizados.get(i).getLex() + tokensAnalizados.get(i + 1).getLex());
-                    
+                    ArrayList lst = op.resolver2doOrden(tokensAnalizados.get(i).getLex(), tokensAnalizados.get(i + 1).getLex().substring(1, 2));
+                    System.out.println("RES:" + lst);
+                    Derivaciones dr2 = new Derivaciones();
+                    dr2.add(lst);
+                    Uniones.add(dr2);
                 } else {
                     System.out.println("*** 3er Orden: " + tokensAnalizados.get(i).getLex());
+                    ArrayList lst = new ArrayList();
+                    if (tokensAnalizados.get(i).getLex().equals("Ɛ")) {
+                        Derivaciones dr2 = new Derivaciones();
+                        Uniones.add(dr2);
+                    } else {
+                        lst.add(tokensAnalizados.get(i).getLex());
+                        Derivaciones dr2 = new Derivaciones();
+                        dr2.add(lst);
+                        Uniones.add(dr2);
+                    }
+                    
                 }
             } //Juntar una exponenciacion cuando la base es un parentesis
             else if (tokensAnalizados.get(i).getLex().equalsIgnoreCase("(")) {
                 int ind = searchIndex(1, 0, i + 1);
-                System.out.println("* 1er Orden: "+i + ", " + ind);
+                System.out.println("* 1er Orden: " + i + ", " + ind);
+                ArrayList arrlt = new ArrayList();
+                for (int j = i; j <= ind; j++) {
+                    arrlt.add(tokensAnalizados.get(j).getLex());
+                }
+                System.out.println(arrlt);
+                Derivaciones dr2 = new Derivaciones();
+                dr2.add(op.resolver1erOrden(arrlt));
+                Uniones.add(dr2);
                 i = ind;
             } else if (tokensAnalizados.get(i).getLex().equalsIgnoreCase(".")) {
                 System.out.println("UNION");
             }
         }
         System.out.println("=== Final ===\n");
+        System.out.println("LISTO PARA SU UNIÓN");
+        for (int i = 0; i < Uniones.size(); i++) {
+            if(Uniones.get(i).content.isEmpty()){
+                Uniones.remove(i);
+                i--;
+                continue;
+            }
+            System.out.println(Uniones.get(i).content);
+        }
+        System.out.println("");
     }
 
     private int searchIndex(int p_a, int p_c, int index) {
@@ -144,9 +188,5 @@ public class AnalizadorLexico {
         } else {
             return "";
         }
-    }
-
-    private String reducirIdempotente() {
-        return "";
     }
 }
