@@ -26,19 +26,8 @@ public class AnalizadorLexico {
         String cadena2 = "t^*.a^4.Ɛ.(4^**|c^2).r^*.(1^*)";
         String cadena3 = "1^2.Ɛ.((a^*)|(b^*))^+.x^**.(i|o)";
         String cadena4 = "(r^**|I^+).1^2.yt.Ɛ^+.((a^*)|(b^*))^+.Ɛ.x^**.(i|o)^2";
-        analizarCadena(cadena4);
-        resolverCadena(cadena4);
-        ArrayList c1 = new ArrayList();
-        c1.add("Ɛ");
-        c1.add("1");
-        c1.add("11");
-        c1.add("111");
-        ArrayList c2 = new ArrayList();
-        c2.add("Ɛ");
-        c2.add("x");
-        c2.add("xx");
-        c2.add("xxx");
-        System.out.println(op.concatenarCadenas(c1, c2));
+        analizarCadena(cadena);
+        resolverCadena(cadena);
     }
 
     public static void main(String[] args) {
@@ -103,6 +92,11 @@ public class AnalizadorLexico {
             System.out.println(Uniones.get(i).content);
         }
         System.out.println("");
+        ArrayList<String> cad1 = Uniones.get(0).content;
+        for (int i = 1; i < Uniones.size(); i++) {
+            cad1 = op.concatenarCadenas(cad1,Uniones.get(i).content);
+        }
+        System.out.println(cad1);
     }
 
     private int searchIndex(int p_a, int p_c, int index) {

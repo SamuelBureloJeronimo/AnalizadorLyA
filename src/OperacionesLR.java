@@ -43,8 +43,9 @@ public class OperacionesLR {
 
     public ArrayList<String> resolver1erOrden(ArrayList<String> arr) {
         ArrayList<String> result = new ArrayList();
-        result.add("CASI");
-
+        result.add("GT");
+        result.add("GTGT");
+        
         return result;
     }
 
