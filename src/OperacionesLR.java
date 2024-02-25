@@ -40,28 +40,35 @@ public class OperacionesLR {
         }
         return result;
     }
+
     public ArrayList<String> UnirCadenas(ArrayList<String> cad1, ArrayList<String> cad2) {
         for (int i = 0; i < cad2.size(); i++) {
             cad1.add(cad2.get(i));
         }
         return cad1;
     }
+
     /*
      * 
      */
     public ArrayList<String> resolver1erOrden(ArrayList<String> arr, int index) {
-        System.out.println("INDEX ["+index+"]");
-        ArrayList<String> tmp = new ArrayList();
         //Elimina los parentesis de inicio y del final
         arr.remove(0);
-        arr.remove(arr.size()-1);
-        System.out.println(arr);
+        arr.remove(arr.size() - 1);
+        //Recorre el arreglo en busca de mas capas (Parentesis)
         for (int i = 0; i < arr.size(); i++) {
-            if(arr.get(i).substring(0,1).equals("^")){
-                System.out.println("Es 2do Grado: "+arr.get(i-1)+arr.get(i));
-                System.out.println("RESULTADO: "+
-                resolver2doOrden(arr.get(i-1), arr.get(i).substring(1, arr.get(i).length())));
-            } else if(arr.get(i).equals("(")){
+            String element = arr.get(i);
+            //Si encuentra una exponenciacion la resuelve
+            if (element.substring(0, 1).equals("^")) {
+                if (!element.equals(")")) {
+                    String base = arr.get(i - 1);
+                    String exp = element.substring(1, element.length());
+                    System.out.println("2DO: " + resolver2doOrden(base, exp));
+
+                }
+            }
+            /*
+            else if(arr.get(i).equals("(")){
                 int ind = searchIndex(arr, 1, 0, i+1);
                 ArrayList<String> tmp1 = new ArrayList();
                 for (int j = i; j <= ind; j++) {
@@ -70,11 +77,11 @@ public class OperacionesLR {
                 System.out.println("Se encontro un conjunto: "+tmp1);
                 resolver1erOrden(tmp1, index+1);
                 i=ind;
-            }
+            }*/
         }
-        return tmp;
+        return new ArrayList();
     }
-    
+
     private int searchIndex(ArrayList<String> tokensAnalizados, int p_a, int p_c, int index) {
         if (p_a == p_c) { //Cuando ya se cerraron todos los parentesis se apertura y de cierre
             //verifica si tiene un exponente al final
@@ -97,18 +104,38 @@ public class OperacionesLR {
             return searchIndex(tokensAnalizados, p_a, p_c, index + 1);
         }
     }
-    
+
     public ArrayList<String> resolver2doOrden(ArrayList<String> idents, String tipo) {
         ArrayList<String> result = new ArrayList();
+
+        //Validar si tiene la forma de (a|b)
+        int p_a = 0, p_c = 0, uniones = 0;
         for (int i = 0; i < idents.size(); i++) {
-            ArrayList<String> tmp = resolver2doOrden(idents.get(i),tipo);
+            if (idents.get(i).equals("(")) {
+                p_a++;
+            } else if (idents.get(i).equals(")")) {
+                p_c++;
+            } else if (idents.get(i).equals("|")) {
+                uniones++;
+            }
+        }
+        if (p_a == 1 && p_a == 1 && uniones == 1 && idents.size() == 5) {
+            result = resolver2doOrden(idents.get(1), tipo);
+            ArrayList<String> tmp = resolver2doOrden(idents.get(2), tipo);
+            return this.UnirCadenas(result, tmp);
+        } else if (idents.get(idents.size() - 1).equals(")")) {
+            System.out.println("TIENE PARENTESIS");
+            return result;
+        }
+        for (int i = 0; i < idents.size(); i++) {
+            ArrayList<String> tmp = resolver2doOrden(idents.get(i), tipo);
             for (int j = 0; j < tmp.size(); j++) {
                 result.add(tmp.get(j));
             }
         }
         return result;
     }
-    
+
     public ArrayList<String> resolver2doOrden(String ident, String tipo) {
         int MAX_ELEM = 4;
         ArrayList<String> result = new ArrayList();

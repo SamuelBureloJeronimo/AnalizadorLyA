@@ -11,14 +11,12 @@ public class AnalizadorLexico {
     OperacionesLR op = new OperacionesLR();
 
     AnalizadorLexico() {
-        String cadena = "b1^2.Ɛ.4.(ar|b)^+.x^**.Yt";
+        String cadena = "b1^21.Ɛ.4.(ar|b)^15.x^**.Yt";
         String cadena2 = "t^*.a^10.Ɛ.(4^**|c^20).r^*.(1^*)";
         String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
         String cadena4 = "(r^**|I^+).1^2.yt.Ɛ^+.((a^*)|(b^*))^+.Ɛ.x^**.(i|o)^2";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
-        //analizarCadena(cadena2);
-        //identificarOrden(analizarCadena(cadena2));
-        resolverCadenNo2(identificarOrden(analizarCadena(cadena2)));
+        resolverCadenNo2(identificarOrden(analizarCadena(cadena4)));
     }
 
     public static void main(String[] args) {
@@ -29,13 +27,35 @@ public class AnalizadorLexico {
         int count = tA.size();
         for (int i = 0; i < tA.size(); i++) {
             if (tA.get(i).orden == 1) {
-                System.out.println("---------------------");
                 op.resolver1erOrden(tA.get(i).content, 0);
+            } 
+            else if (tA.get(i).orden == 2) 
+            {
+                //Valida si el ultimo elemento antes del exponente es un grupo entre parentesis
+                if(tA.get(i).content.get(tA.get(i).content.size()-2)
+                        .substring(0, 1).equals(")")){
+                    
+                    ArrayList<String> base = new ArrayList();
+                    for (int j = 0; j < tA.get(i).content.size()-1; j++) {
+                        base.add(tA.get(i).content.get(j));
+                    }
+                    String exp = tA.get(i).content.get(tA.get(i).content.size()-1).substring(1);
+                    System.out.println("BASE: "+base+"\nEXP: "+exp);
+                    op.resolver2doOrden(base,exp);
+                } else {
+                    String base = tA.get(i).content.get(0);
+                    String exp = tA.get(i).content.get(tA.get(i).content.size()-1).substring(1);
+                    System.out.println(op.resolver2doOrden(base,exp));
+                }
             } else if (tA.get(i).orden == 3 || tA.get(i).orden == 4) {
+                System.out.println(tA.get(i).content);
                 count--;
             }
         }
         System.out.println("COUNT: " + count);
+        if(count != 0){
+            System.out.println("-- Expresión aun no reducida --");
+        }
     }
 
     private ArrayList<Derivaciones> identificarOrden(ArrayList<Token> tokensAnalizados) {
@@ -163,7 +183,6 @@ public class AnalizadorLexico {
         ArrayList<Token> tokensAnalizados = new ArrayList();
         System.out.println("==== ANALIZADOR LÉXICO By Samuel Burelos Jerónimo ====\n");
         while (cadena.length() > 0) {
-            System.out.println(cadena);
             String c = cadena.substring(0, 1);
             if (c.matches("[0-9]*") || c.matches("[A-Z]*") || c.matches("[a-z]*")) {
 
