@@ -49,30 +49,13 @@ public class OperacionesLR {
     /*
      * 
      */
-    public ArrayList<String> resolver1erOrden(ArrayList<String> arr, int index) {
-        System.out.println("INDEX ["+index+"]");
+    public ArrayList<Derivaciones> resolver1erOrden(ArrayList<Token> arr) {
         ArrayList<String> tmp = new ArrayList();
         //Elimina los parentesis de inicio y del final
         arr.remove(0);
         arr.remove(arr.size()-1);
-        System.out.println(arr);
-        for (int i = 0; i < arr.size(); i++) {
-            if(arr.get(i).substring(0,1).equals("^")){
-                System.out.println("Es 2do Grado: "+arr.get(i-1)+arr.get(i));
-                System.out.println("RESULTADO: "+
-                resolver2doOrden(arr.get(i-1), arr.get(i).substring(1, arr.get(i).length())));
-            } else if(arr.get(i).equals("(")){
-                int ind = searchIndex(arr, 1, 0, i+1);
-                ArrayList<String> tmp1 = new ArrayList();
-                for (int j = i; j <= ind; j++) {
-                    tmp1.add(arr.get(j));
-                }
-                System.out.println("Se encontro un conjunto: "+tmp1);
-                resolver1erOrden(tmp1, index+1);
-                i=ind;
-            }
-        }
-        return tmp;
+        AnalizadorLexico anl = new AnalizadorLexico();
+        return anl.identificarOrden(arr);
     }
     
     private int searchIndex(ArrayList<String> tokensAnalizados, int p_a, int p_c, int index) {

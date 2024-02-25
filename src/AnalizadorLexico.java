@@ -10,27 +10,25 @@ public class AnalizadorLexico {
     ArrayList<Derivaciones> Separaciones = new ArrayList();
     OperacionesLR op = new OperacionesLR();
 
-    AnalizadorLexico() {
-        String cadena = "b1^2.Ɛ.4.(ar|b)^+.x^**.Yt";
-        String cadena2 = "t^*.a^10.Ɛ.(4^**|c^20).r^*.(1^*)";
-        String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
-        String cadena4 = "(r^**|I^+).1^2.yt.Ɛ^+.((a^*)|(b^*))^+.Ɛ.x^**.(i|o)^2";
-        String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
-        //analizarCadena(cadena2);
-        //identificarOrden(analizarCadena(cadena2));
-        resolverCadenNo2(identificarOrden(analizarCadena(cadena2)));
-    }
-
     public static void main(String[] args) {
+        String cadena = "b1^2.Ɛ.4.(ar|b)^+.x^**.Yt";
+        String cadena2 = "t^*.a^10.Ɛ.(4^**|c^20).r^*.1^*";
+        String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
+        String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*))^12.Ɛ.x^**.(i|o)^2";
+        String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
         AnalizadorLexico al = new AnalizadorLexico();
+        al.identificarOrden(al.analizarCadena(cadena4));
     }
 
     private void resolverCadenNo2(ArrayList<Derivaciones> tA) {
         int count = tA.size();
         for (int i = 0; i < tA.size(); i++) {
-            if (tA.get(i).orden == 1) {
+            if (tA.get(i).orden == 2) {
                 System.out.println("---------------------");
-                op.resolver1erOrden(tA.get(i).content, 0);
+                //op.resolver2doOrden(tA.get(i).content, 0);
+            } else if (tA.get(i).orden == 1) {
+                System.out.println("---------------------");
+                //op.resolver1erOrden(tA.get(i).content, 0);
             } else if (tA.get(i).orden == 3 || tA.get(i).orden == 4) {
                 count--;
             }
@@ -38,7 +36,7 @@ public class AnalizadorLexico {
         System.out.println("COUNT: " + count);
     }
 
-    private ArrayList<Derivaciones> identificarOrden(ArrayList<Token> tokensAnalizados) {
+    public ArrayList<Derivaciones> identificarOrden(ArrayList<Token> tokensAnalizados) {
         System.out.println("\n==== Indentificar el orden de resolución de la ecuación ====\n");
 
         //eliminarCadenaVacia();
@@ -50,11 +48,9 @@ public class AnalizadorLexico {
                 if ((i + 1) < tokensAnalizados.size()) {
                     if (tokensAnalizados.get(i + 1).getLex().substring(0, 1).equals("^")) {
                         System.out.println("** 2do Orden: " + tokensAnalizados.get(i).getLex() + tokensAnalizados.get(i + 1).getLex());
-                        ArrayList lst = new ArrayList();
-                        lst.add(tokensAnalizados.get(i).getLex());
-                        lst.add(tokensAnalizados.get(i + 1).getLex());
+                        ArrayList lst = op.resolver2doOrden(tokensAnalizados.get(i).getLex(), tokensAnalizados.get(i + 1).getLex().substring(1));
                         Derivaciones dr2 = new Derivaciones();
-                        dr2.add(lst, 2);
+                        dr2.add(lst, 4);
                         Separaciones.add(dr2);
                     } else {
                         System.out.println("*** 3er Orden: " + tokensAnalizados.get(i).getLex());
@@ -93,18 +89,22 @@ public class AnalizadorLexico {
             else if (tokensAnalizados.get(i).getLex().equalsIgnoreCase("(")) {
                 int ind = searchIndex(tokensAnalizados, 1, 0, i + 1);
                 ArrayList<String> arrlt = new ArrayList();
+                ArrayList<Token> othr = new ArrayList();
                 for (int j = i; j <= ind; j++) {
                     arrlt.add(tokensAnalizados.get(j).getLex());
+                    othr.add(tokensAnalizados.get(j));
                 }
+
                 System.out.println("* 1er Orden: " + arrlt);
-                Derivaciones dr2 = new Derivaciones();
-                if (arrlt.get(arrlt.size() - 1).substring(0, 1).equals("^")) {
-                    dr2.add(arrlt, 2);
-                } else {
-                    dr2.add(arrlt, 1);
-                }
-                Separaciones.add(dr2);
+                ArrayList<Derivaciones> dr = op.resolver1erOrden(othr);
+                
+                    for (int j = 0; j < dr.size(); j++) {
+                        Separaciones.add(dr.get(j));
+                    }
+                
+                //Separaciones.add(dr2);
                 i = ind;
+
             } else if (tokensAnalizados.get(i).getLex().equalsIgnoreCase(".")) {
                 Derivaciones dr2 = new Derivaciones();
                 ArrayList lst = new ArrayList();
@@ -163,7 +163,6 @@ public class AnalizadorLexico {
         ArrayList<Token> tokensAnalizados = new ArrayList();
         System.out.println("==== ANALIZADOR LÉXICO By Samuel Burelos Jerónimo ====\n");
         while (cadena.length() > 0) {
-            System.out.println(cadena);
             String c = cadena.substring(0, 1);
             if (c.matches("[0-9]*") || c.matches("[A-Z]*") || c.matches("[a-z]*")) {
 
@@ -175,7 +174,7 @@ public class AnalizadorLexico {
             } else {
                 if (cadena.length() > 1 && c.equals("^")) {
                     String lt = cadena.substring(1, 2);
-                    if(lt.equals("*") || lt.equals("+") ){
+                    if (lt.equals("*") || lt.equals("+")) {
                         System.out.println("<Operador>          " + cadena.substring(0, 2));
                         tokensAnalizados.add(new Token(cadena.substring(0, 2), "Operador"));
                         if (cadena.length() > 2 && cadena.substring(2, 3).equals("*")) {
@@ -183,14 +182,12 @@ public class AnalizadorLexico {
                         } else {
                             cadena = cadena.substring(2);
                         }
-                    }
-                    else if (lt.matches("[0-9]*")) {
-                        
+                    } else if (lt.matches("[0-9]*")) {
+
                         String ident = c + searchNextAZ_09(cadena.substring(1));
                         System.out.println("<Operador>          " + ident);
                         tokensAnalizados.add(new Token(ident, "Operador"));
                         cadena = cadena.substring(ident.length());
-                        
 
                     } else {
                         System.out.println("Error de Sinstaxis");
