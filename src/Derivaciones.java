@@ -7,7 +7,9 @@ import java.util.ArrayList;
  */
 public class Derivaciones {
     ArrayList<String> content = new ArrayList();
-    public void add(ArrayList<String> content){
+    int orden;
+    public void add(ArrayList<String> content, int orden){
         this.content = content;
+        this.orden = orden;
     }
 }
