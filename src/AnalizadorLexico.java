@@ -12,11 +12,12 @@ public class AnalizadorLexico {
 
     AnalizadorLexico() {
         String cadena = "b1^2.Ɛ.4.(ar|b)^+.x^**.Yt";
-        String cadena2 = "t^*.a^44.Ɛ.(4^**|c^2).r^*.(1^*)";
+        String cadena2 = "t^*.a^10.Ɛ.(4^**|c^20).r^*.(1^*)";
         String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
         String cadena4 = "(r^**|I^+).1^2.yt.Ɛ^+.((a^*)|(b^*))^+.Ɛ.x^**.(i|o)^2";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
-
+        //analizarCadena(cadena2);
+        //identificarOrden(analizarCadena(cadena2));
         resolverCadenNo2(identificarOrden(analizarCadena(cadena2)));
     }
 
@@ -162,6 +163,7 @@ public class AnalizadorLexico {
         ArrayList<Token> tokensAnalizados = new ArrayList();
         System.out.println("==== ANALIZADOR LÉXICO By Samuel Burelos Jerónimo ====\n");
         while (cadena.length() > 0) {
+            System.out.println(cadena);
             String c = cadena.substring(0, 1);
             if (c.matches("[0-9]*") || c.matches("[A-Z]*") || c.matches("[a-z]*")) {
 
@@ -173,21 +175,22 @@ public class AnalizadorLexico {
             } else {
                 if (cadena.length() > 1 && c.equals("^")) {
                     String lt = cadena.substring(1, 2);
-                    if (lt.equals("*") || lt.equals("+") || lt.matches("[0-9]*")) {
-                        if (cadena.length() > 2 && cadena.substring(2, 3).equals("*") || cadena.substring(1, 2).equals("*")) {
-                            System.out.println("<Operador>          " + cadena.substring(0, 2));
-                            tokensAnalizados.add(new Token(cadena.substring(0, 2), "Operador"));
-                            cadena = cadena.substring(3);
-                        } else if (cadena.substring(1, 2).equals("+")) {
-                            System.out.println("<Operador>          " + cadena.substring(0, 2));
-                            tokensAnalizados.add(new Token(cadena.substring(0, 2), "Operador"));
+                    if(lt.equals("*") || lt.equals("+") ){
+                        System.out.println("<Operador>          " + cadena.substring(0, 2));
+                        tokensAnalizados.add(new Token(cadena.substring(0, 2), "Operador"));
+                        if (cadena.length() > 2 && cadena.substring(2, 3).equals("*")) {
                             cadena = cadena.substring(3);
                         } else {
-                            String ident = c + searchNextAZ_09(cadena.substring(1));
-                            System.out.println("<Operador>          " + ident);
-                            tokensAnalizados.add(new Token(ident, "Operador"));
-                            cadena = cadena.substring(ident.length());
+                            cadena = cadena.substring(2);
                         }
+                    }
+                    else if (lt.matches("[0-9]*")) {
+                        
+                        String ident = c + searchNextAZ_09(cadena.substring(1));
+                        System.out.println("<Operador>          " + ident);
+                        tokensAnalizados.add(new Token(ident, "Operador"));
+                        cadena = cadena.substring(ident.length());
+                        
 
                     } else {
                         System.out.println("Error de Sinstaxis");
