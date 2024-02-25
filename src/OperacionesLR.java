@@ -58,12 +58,12 @@ public class OperacionesLR {
 
         AnalizadorLexico anl = new AnalizadorLexico();
         ArrayList<Derivaciones> result = anl.identificarOrden(arr);
-        ArrayList<String> exponer = new ArrayList();
+        System.out.println("Lenght: " + result.size());
+
         if (!exp.equals("")) {
             System.out.println("Namas Expongo y ya. de DRIVARCION:");
             int vuelta = 0;
             while (true) {
-                System.out.println("Lenght: " + result.size());
                 for (int i = vuelta; i < result.size(); i++) {
                     System.out.println("Entro al For.");
                     System.out.println(result.get(i).content);
@@ -72,13 +72,14 @@ public class OperacionesLR {
                         System.out.println("Cad2: " + result.get(i + 1).content);
                         result.get(i + 1).content = UnirCadenas(result.get(i - 1).content, result.get(i + 1).content);
                         System.out.println("UNION: " + result.get(i + 1).content);
-                        vuelta+=i+2;
+                        vuelta += i + 2;
                         break;
                     } else if (result.get(i).content.get(0).equals(".")) {
                         System.out.println("Cad1" + result.get(i - 1).content);
                         System.out.println("Cad2: " + result.get(i + 1).content);
-                        System.out.println("CONCATENAR: " + concatenarCadenas(result.get(i - 1).content, result.get(i + 1).content));
-                        vuelta+=i+2;
+                        result.get(i + 1).content = concatenarCadenas(result.get(i - 1).content, result.get(i + 1).content);
+                        System.out.println("CONCATENAR: " + result.get(i + 1).content);
+                        vuelta += i + 2;
                         break;
                     }
                 }
@@ -86,15 +87,47 @@ public class OperacionesLR {
                     break;
                 }
             }
-            
-            System.out.println(resolver2doOrden(result.get(0).content, exp));
-            System.out.println("RESULTADO:"+result.get(0).content);
+            Derivaciones der = new Derivaciones();
+            der.content = resolver2doOrden(result.get(0).content, exp);
+            result.set(0, der);
+            System.out.println("RESULTADO:" + der.content);
             return result;
 
         } else {
-            System.out.println("Resultado de DRIVARCION:");
-            for (int i = 0; i < result.size(); i++) {
-                System.out.println(result.get(i).content);
+            if (result.size() == 1) {
+                System.out.println("Resultado de DRIVARCION:");
+                for (int i = 0; i < result.size(); i++) {
+                    System.out.println(result.get(i).content);
+                }
+                return result;
+            }
+            int vuelta = 0;
+            while (true) {
+                for (int i = vuelta; i < result.size(); i++) {
+                    System.out.println("Entro al For.");
+                    System.out.println(result.get(i).content);
+                    if (result.get(i).content.get(0).equals("|")) {
+                        System.out.println("Cad1" + result.get(i - 1).content);
+                        System.out.println("Cad2: " + result.get(i + 1).content);
+                        result.get(i + 1).content = UnirCadenas(result.get(i - 1).content, result.get(i + 1).content);
+                        System.out.println("UNION: " + result.get(i + 1).content);
+                        vuelta += i + 2;
+                        break;
+                    } else if (result.get(i).content.get(0).equals(".")) {
+                        System.out.println("Cad1" + result.get(i - 1).content);
+                        System.out.println("Cad2: " + result.get(i + 1).content);
+                        result.get(i + 1).content = concatenarCadenas(result.get(i - 1).content, result.get(i + 1).content);
+                        System.out.println("CONCATENAR: " + result.get(i + 1).content);
+                        vuelta += i + 2;
+                        break;
+                    }
+                }
+                if (vuelta >= result.size()) {
+                    break;
+                }
+            }
+            for (int i = 0; i < result.size()-1; i++) {
+                result.remove(i);
             }
             return result;
         }

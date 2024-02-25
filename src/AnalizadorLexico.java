@@ -11,29 +11,57 @@ public class AnalizadorLexico {
     OperacionesLR op = new OperacionesLR();
 
     public static void main(String[] args) {
-        String cadena = "b1^2.Ɛ.4.(ar|b)^+.x^**.Yt";
-        String cadena2 = "t^*.a^10.Ɛ.(4^**|c^20).r^*.1^*";
+        String cadena = "v^*.(0|1)^+.(a|b).Ɛ.x^*.y";
+        String cadena2 = "t^*.a^10.Ɛ.(4^**|c^2).r^*.1^*";
         String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
-        String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*))^3.Ɛ.x^**.(i|o)^6";
+        String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*)).Ɛ^12.(r|(b^+))";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
         AnalizadorLexico al = new AnalizadorLexico();
-        al.identificarOrden(al.analizarCadena(cadena3));
+        al.identificarOrden(al.analizarCadena(cadena));
+        //al.solucionFinal(al.identificarOrden(al.analizarCadena(cadena3)));
     }
 
-    private void resolverCadenNo2(ArrayList<Derivaciones> tA) {
-        int count = tA.size();
-        for (int i = 0; i < tA.size(); i++) {
-            if (tA.get(i).orden == 2) {
-                System.out.println("---------------------");
-                //op.resolver2doOrden(tA.get(i).content, 0);
-            } else if (tA.get(i).orden == 1) {
-                System.out.println("---------------------");
-                //op.resolver1erOrden(tA.get(i).content, 0);
-            } else if (tA.get(i).orden == 3 || tA.get(i).orden == 4) {
-                count--;
+    public void solucionFinal(ArrayList<Derivaciones> Separaciones) {
+        for (int i = 0; i < Separaciones.size(); i++) {
+            if (Separaciones.get(i).content.get(0).equalsIgnoreCase("|")) {
+                Separaciones.remove(i);
+                i--;
+                continue;
+            }
+            System.out.println(Separaciones.get(i).content);
+        }
+
+        System.out.println(" =====================    S A L I D A    ==================== ");
+        int vuelta = 0;
+        while (true) {
+            for (int i = vuelta; i < Separaciones.size(); i++) {
+                //System.out.println("Entro al For.");
+                //System.out.println(Separaciones.get(i).content);
+                if (Separaciones.get(i).content.get(0).equals("|")) {
+                    //System.out.println("Cad1" + Separaciones.get(i - 1).content);
+                    //System.out.println("Cad2: " + Separaciones.get(i + 1).content);
+                    Separaciones.get(i + 1).content = op.UnirCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
+                    //System.out.println("UNION: " + Separaciones.get(i + 1).content);
+                    vuelta += i + 2;
+                    break;
+                } else if (Separaciones.get(i).content.get(0).equals(".")) {
+                    //System.out.println("Cad1" + Separaciones.get(i - 1).content);
+                    //System.out.println("Cad2: " + Separaciones.get(i + 1).content);
+                    Separaciones.get(i + 1).content = op.concatenarCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
+                    //System.out.println("CONCATENAR: " + Separaciones.get(i + 1).content);
+                    vuelta += i + 2;
+                    break;
+                }
+            }
+            if (vuelta >= Separaciones.size()) {
+                break;
             }
         }
-        System.out.println("COUNT: " + count);
+        for (int i = 0; i < Separaciones.size() - 1; i++) {
+            Separaciones.remove(i);
+        }
+            System.out.println(Separaciones.get(0).content);
+        
     }
 
     public ArrayList<Derivaciones> identificarOrden(ArrayList<Token> tokensAnalizados) {
@@ -134,7 +162,7 @@ public class AnalizadorLexico {
                 i--;
                 continue;
             }
-            System.out.println(Separaciones.get(i).content + " [Orden: " + Separaciones.get(i).orden + "]");
+            System.out.println(Separaciones.get(i).content);
         }
         System.out.println("\n");
         return Separaciones;
