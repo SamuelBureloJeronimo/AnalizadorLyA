@@ -96,11 +96,41 @@ public class OperacionesLR {
         } else {
             if (result.size() == 1) {
                 System.out.println("Resultado de DRIVARCION:");
-                for (int i = 0; i < result.size(); i++) {
-                    System.out.println(result.get(i).content);
-                }
+                System.out.println(result.get(0).content);
                 return result;
             }
+            int rftg = 0;
+            for (int i = 0; i < result.size() - 1; i++) {
+                System.out.println(result.get(i).content.get(0));
+                //Si se repite el signo en el siguiente
+                if (result.get(i).content.get(0).equalsIgnoreCase("|")) {
+                    if (rftg > 0) {
+                        System.out.println("Se removio:" + result.get(i).content);
+                        result.remove(i);
+                        i--;
+                        rftg = 1;
+                    } else {
+                        rftg++;
+                    }
+                } else if (result.get(i).content.get(0).equalsIgnoreCase(".")) {
+                    if (rftg > 0) {
+                        System.out.println("Se removio:" + result.get(i).content);
+                        result.remove(i);
+                        i--;
+                        rftg = 1;
+                    } else {
+                        rftg++;
+                    }
+                } else {
+                    rftg = 0;
+
+                }
+            }
+            System.out.println("=========================");
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(result.get(i).content);
+            }
+            System.out.println("=========================");
             int vuelta = 0;
             while (true) {
                 for (int i = vuelta; i < result.size(); i++) {
@@ -126,7 +156,7 @@ public class OperacionesLR {
                     break;
                 }
             }
-            for (int i = 0; i < result.size()-1; i++) {
+            for (int i = 0; i < result.size() - 1; i++) {
                 result.remove(i);
             }
             return result;

@@ -12,44 +12,55 @@ public class AnalizadorLexico {
 
     public static void main(String[] args) {
         String cadena = "v^*.(0|1)^+.(a|b).Ɛ.x^*.y";
-        String cadena2 = "t^*.a^10.Ɛ.(4^**|c^2).r^*.1^*";
-        String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
+        String cadena2 = "1^2.Ɛ.(a|b)^+.x^**.Ɛ^*";
+        String cadena3 = "1^2.Ɛ.((a^12).(a|b)|(b^*)).x^**.(i|o)";
         String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*)).Ɛ^12.(r|(b^+))";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
         AnalizadorLexico al = new AnalizadorLexico();
-        al.identificarOrden(al.analizarCadena(cadena));
-        //al.solucionFinal(al.identificarOrden(al.analizarCadena(cadena3)));
+        //al.identificarOrden(al.analizarCadena(cadena3));
+        al.solucionFinal(al.identificarOrden(al.analizarCadena(cadena4)));
     }
 
     public void solucionFinal(ArrayList<Derivaciones> Separaciones) {
-        for (int i = 0; i < Separaciones.size(); i++) {
+        System.out.println("Antes de la salida");
+        int rftg = 0;
+        for (int i = 0; i < Separaciones.size() - 1; i++) {
+            System.out.println(Separaciones.get(i).content.get(0));
+            //Si se repite el signo en el siguiente
             if (Separaciones.get(i).content.get(0).equalsIgnoreCase("|")) {
-                Separaciones.remove(i);
-                i--;
-                continue;
+                if (rftg > 0) {
+                    System.out.println("Se removio:" + Separaciones.get(i).content);
+                    Separaciones.remove(i);
+                    i--;
+                    rftg = 1;
+                } else {
+                    rftg++;
+                }
+            } else if (Separaciones.get(i).content.get(0).equalsIgnoreCase(".")) {
+                if (rftg > 0) {
+                    System.out.println("Se removio:" + Separaciones.get(i).content);
+                    Separaciones.remove(i);
+                    i--;
+                    rftg = 1;
+                } else {
+                    rftg++;
+                }
+            } else {
+                rftg = 0;
             }
-            System.out.println(Separaciones.get(i).content);
         }
-
-        System.out.println(" =====================    S A L I D A    ==================== ");
+        System.out.println("=========================");
         int vuelta = 0;
         while (true) {
             for (int i = vuelta; i < Separaciones.size(); i++) {
-                //System.out.println("Entro al For.");
-                //System.out.println(Separaciones.get(i).content);
-                if (Separaciones.get(i).content.get(0).equals("|")) {
-                    //System.out.println("Cad1" + Separaciones.get(i - 1).content);
-                    //System.out.println("Cad2: " + Separaciones.get(i + 1).content);
-                    Separaciones.get(i + 1).content = op.UnirCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
-                    //System.out.println("UNION: " + Separaciones.get(i + 1).content);
-                    vuelta += i + 2;
-                    break;
-                } else if (Separaciones.get(i).content.get(0).equals(".")) {
-                    //System.out.println("Cad1" + Separaciones.get(i - 1).content);
-                    //System.out.println("Cad2: " + Separaciones.get(i + 1).content);
+                if (Separaciones.get(i).content.get(0).equals(".")) {
+                    System.out.println("=======");
+                    System.out.println("Cad1:" + Separaciones.get(i - 1).content);
+                    System.out.println("Cad2: " + Separaciones.get(i + 1).content);
                     Separaciones.get(i + 1).content = op.concatenarCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
-                    //System.out.println("CONCATENAR: " + Separaciones.get(i + 1).content);
-                    vuelta += i + 2;
+                    System.out.println("CONCATENAR: " + Separaciones.get(i + 1).content);
+                    vuelta += i + 2;                    
+                    System.out.println("=======");
                     break;
                 }
             }
@@ -57,11 +68,8 @@ public class AnalizadorLexico {
                 break;
             }
         }
-        for (int i = 0; i < Separaciones.size() - 1; i++) {
-            Separaciones.remove(i);
-        }
-            System.out.println(Separaciones.get(0).content);
-        
+        System.out.println("Resultado:");
+        System.out.println(Separaciones.get(Separaciones.size()-1).content);
     }
 
     public ArrayList<Derivaciones> identificarOrden(ArrayList<Token> tokensAnalizados) {
@@ -157,11 +165,6 @@ public class AnalizadorLexico {
         System.out.println("=== Final ===\n");
         System.out.println("LISTO PARA SU RESOLUCIÓN");
         for (int i = 0; i < Separaciones.size(); i++) {
-            if (Separaciones.get(i).content.isEmpty()) {
-                Separaciones.remove(i);
-                i--;
-                continue;
-            }
             System.out.println(Separaciones.get(i).content);
         }
         System.out.println("\n");
