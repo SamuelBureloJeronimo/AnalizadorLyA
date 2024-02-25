@@ -40,24 +40,66 @@ public class OperacionesLR {
         }
         return result;
     }
+
     public ArrayList<String> UnirCadenas(ArrayList<String> cad1, ArrayList<String> cad2) {
         for (int i = 0; i < cad2.size(); i++) {
             cad1.add(cad2.get(i));
         }
         return cad1;
     }
+
     /*
      * 
      */
-    public ArrayList<Derivaciones> resolver1erOrden(ArrayList<Token> arr) {
-        ArrayList<String> tmp = new ArrayList();
+    public ArrayList<Derivaciones> resolver1erOrden(ArrayList<Token> arr, String exp) {
         //Elimina los parentesis de inicio y del final
         arr.remove(0);
-        arr.remove(arr.size()-1);
+        arr.remove(arr.size() - 1);
+
         AnalizadorLexico anl = new AnalizadorLexico();
-        return anl.identificarOrden(arr);
+        ArrayList<Derivaciones> result = anl.identificarOrden(arr);
+        ArrayList<String> exponer = new ArrayList();
+        if (!exp.equals("")) {
+            System.out.println("Namas Expongo y ya. de DRIVARCION:");
+            int vuelta = 0;
+            while (true) {
+                System.out.println("Lenght: " + result.size());
+                for (int i = vuelta; i < result.size(); i++) {
+                    System.out.println("Entro al For.");
+                    System.out.println(result.get(i).content);
+                    if (result.get(i).content.get(0).equals("|")) {
+                        System.out.println("Cad1" + result.get(i - 1).content);
+                        System.out.println("Cad2: " + result.get(i + 1).content);
+                        result.get(i + 1).content = UnirCadenas(result.get(i - 1).content, result.get(i + 1).content);
+                        System.out.println("UNION: " + result.get(i + 1).content);
+                        vuelta+=i+2;
+                        break;
+                    } else if (result.get(i).content.get(0).equals(".")) {
+                        System.out.println("Cad1" + result.get(i - 1).content);
+                        System.out.println("Cad2: " + result.get(i + 1).content);
+                        System.out.println("CONCATENAR: " + concatenarCadenas(result.get(i - 1).content, result.get(i + 1).content));
+                        vuelta+=i+2;
+                        break;
+                    }
+                }
+                if (vuelta >= result.size()) {
+                    break;
+                }
+            }
+            
+            System.out.println(resolver2doOrden(result.get(0).content, exp));
+            System.out.println("RESULTADO:"+result.get(0).content);
+            return result;
+
+        } else {
+            System.out.println("Resultado de DRIVARCION:");
+            for (int i = 0; i < result.size(); i++) {
+                System.out.println(result.get(i).content);
+            }
+            return result;
+        }
     }
-    
+
     private int searchIndex(ArrayList<String> tokensAnalizados, int p_a, int p_c, int index) {
         if (p_a == p_c) { //Cuando ya se cerraron todos los parentesis se apertura y de cierre
             //verifica si tiene un exponente al final
@@ -80,25 +122,22 @@ public class OperacionesLR {
             return searchIndex(tokensAnalizados, p_a, p_c, index + 1);
         }
     }
-    
+
     public ArrayList<String> resolver2doOrden(ArrayList<String> idents, String tipo) {
         ArrayList<String> result = new ArrayList();
         for (int i = 0; i < idents.size(); i++) {
-            ArrayList<String> tmp = resolver2doOrden(idents.get(i),tipo);
+            ArrayList<String> tmp = resolver2doOrden(idents.get(i), tipo);
             for (int j = 0; j < tmp.size(); j++) {
                 result.add(tmp.get(j));
             }
         }
         return result;
     }
-    
+
     public ArrayList<String> resolver2doOrden(String ident, String tipo) {
         int MAX_ELEM = 4;
         ArrayList<String> result = new ArrayList();
         String sum = "";
-        if (ident.equalsIgnoreCase("Ɛ")) {
-            return result;
-        }
         //TIPO: Cerradura de Kleene
         if (tipo.equalsIgnoreCase("*")) {
             result.add("Ɛ");

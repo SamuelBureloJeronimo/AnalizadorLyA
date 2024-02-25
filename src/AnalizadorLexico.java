@@ -14,10 +14,10 @@ public class AnalizadorLexico {
         String cadena = "b1^2.Ɛ.4.(ar|b)^+.x^**.Yt";
         String cadena2 = "t^*.a^10.Ɛ.(4^**|c^20).r^*.1^*";
         String cadena3 = "1^2.Ɛ.(a^12.(a|b)|(b^*)).x^**.(i|o)";
-        String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*))^12.Ɛ.x^**.(i|o)^2";
+        String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*))^3.Ɛ.x^**.(i|o)^6";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
         AnalizadorLexico al = new AnalizadorLexico();
-        al.identificarOrden(al.analizarCadena(cadena4));
+        al.identificarOrden(al.analizarCadena(cadena3));
     }
 
     private void resolverCadenNo2(ArrayList<Derivaciones> tA) {
@@ -96,12 +96,17 @@ public class AnalizadorLexico {
                 }
 
                 System.out.println("* 1er Orden: " + arrlt);
-                ArrayList<Derivaciones> dr = op.resolver1erOrden(othr);
-                
+                if (arrlt.get(arrlt.size() - 1).substring(0, 1).equals("^")) {
+                    ArrayList<Derivaciones> dr = op.resolver1erOrden(othr, arrlt.get(arrlt.size() - 1).substring(1));
+                    Separaciones.add(dr.get(0));
+                } else {
+                    ArrayList<Derivaciones> dr = op.resolver1erOrden(othr, "");
                     for (int j = 0; j < dr.size(); j++) {
                         Separaciones.add(dr.get(j));
                     }
-                
+
+                }
+
                 //Separaciones.add(dr2);
                 i = ind;
 
