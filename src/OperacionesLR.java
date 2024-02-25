@@ -26,36 +26,18 @@ public class OperacionesLR {
             return cad1;
         }
         for (int i = 0; i < cad1.size(); i++) {
-            if (cad1.get(i).equals("[...]")) {
-                result.add("[...]");
-                continue;
-            }
             for (int j = 0; j < cad2.size(); j++) {
-                if (cad2.get(j).equals("[...]")) {
-                    result.add("[...]");
-                    continue;
-                }
-
-                if (!cad1.get(i).equals("Ɛ") && cad2.get(j).equals("Ɛ")) {
-                    result.add(cad1.get(i));
+                if (cad1.get(i).equals("Ɛ") && cad2.get(j).equals("Ɛ")) {
+                    result.add("Ɛ");
                 } else if (cad1.get(i).equals("Ɛ") && !cad2.get(j).equals("Ɛ")) {
                     result.add(cad2.get(j));
+                } else if (!cad1.get(i).equals("Ɛ") && cad2.get(j).equals("Ɛ")) {
+                    result.add(cad1.get(i));
                 } else {
                     result.add(cad1.get(i) + cad2.get(j));
                 }
             }
-        }
-        int hay = 0;
-        for (int i = result.size() - 1; i > 0; i--) {
-            if (result.get(i).equals("[...]")) {
-                result.remove(i);
-                hay++;
-            } else {
-                if (hay > 0) {
-                    result.add("[...]");
-                    break;
-                }
-            }
+
         }
         return result;
     }
@@ -229,7 +211,6 @@ public class OperacionesLR {
                 sum += ident;
                 result.add(sum);
             }
-            result.add("[...]");
 
             //TIPO: Cerradura Positiva
         } else if (tipo.equalsIgnoreCase("+")) {
@@ -237,7 +218,6 @@ public class OperacionesLR {
                 sum += ident;
                 result.add(sum);
             }
-            result.add("[...]");
 
             //TIPO: Exponenciación
         } else if (tipo.matches("[0-9]*")) {

@@ -14,7 +14,7 @@ public class AnalizadorLexico {
         String cadena = "v^*.(0|1)^+.(a|b).Ɛ.x^*.y";
         String cadena2 = "1^2.Ɛ.(a|b)^+.x^**.Ɛ^*";
         String cadena3 = "1^2.Ɛ.((a^12).(a|b)|(b^*)).x^**.(i|o)";
-        String cadena4 = "(r^**|I^+)^*.1^4.yt.Ɛ^+.((a^*)|(b^*)|(a^*)).Ɛ^12.(r|(b^+)).Ɛ";
+        String cadena4 = "(r^**|I^+)^*.1^4.yt.Ɛ^+.((a^*).(b^*.a^3)|(a^*)).Ɛ^12.(r|(b^+)).Ɛ";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
         AnalizadorLexico al = new AnalizadorLexico();
         //al.identificarOrden(al.analizarCadena(cadena3));
