@@ -201,8 +201,10 @@ public class OperacionesLR {
         int MAX_ELEM = 4;
         ArrayList<String> result = new ArrayList();
         String sum = "";
-        //TIPO: Cerradura de Kleene
-        if (tipo.equalsIgnoreCase("*")) {
+        if(ident.equalsIgnoreCase("Ɛ")){
+            result.add("Ɛ");
+            //TIPO: Cerradura de Kleene
+        } else if (tipo.equalsIgnoreCase("*")) {
             result.add("Ɛ");
             for (int i = 1; i < MAX_ELEM; i++) {
                 sum += ident;

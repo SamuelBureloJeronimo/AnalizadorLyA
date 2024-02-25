@@ -14,7 +14,7 @@ public class AnalizadorLexico {
         String cadena = "v^*.(0|1)^+.(a|b).Ɛ.x^*.y";
         String cadena2 = "1^2.Ɛ.(a|b)^+.x^**.Ɛ^*";
         String cadena3 = "1^2.Ɛ.((a^12).(a|b)|(b^*)).x^**.(i|o)";
-        String cadena4 = "(r^**|I^+)^*.1^12.yt.Ɛ^+.((a^*)|(b^*)|(a^*)).Ɛ^12.(r|(b^+))";
+        String cadena4 = "(r^**|I^+)^*.1^4.yt.Ɛ^+.((a^*)|(b^*)|(a^*)).Ɛ^12.(r|(b^+)).Ɛ";
         String cadena5 = "Ɛ.1.Ɛ.4.x.Ɛ";
         AnalizadorLexico al = new AnalizadorLexico();
         //al.identificarOrden(al.analizarCadena(cadena3));
@@ -22,9 +22,24 @@ public class AnalizadorLexico {
     }
 
     public void solucionFinal(ArrayList<Derivaciones> Separaciones) {
-        System.out.println("Antes de la salida");
+        System.out.println("== Eliminar las cadenas vacías ==");
         int rftg = 0;
         for (int i = 0; i < Separaciones.size() - 1; i++) {
+            if (Separaciones.get(i).content.get(0).equalsIgnoreCase("Ɛ") && Separaciones.get(i).content.size() == 1) {
+                if (i == 0) {
+                    System.out.println("Se removio:" + Separaciones.get(i).content);
+                    Separaciones.remove(i);
+                    System.out.println("Se removio:" + Separaciones.get(i + 1).content);
+                    Separaciones.remove(i);
+                    rftg = 0;
+                } else {
+                    System.out.println("Se removio:" + Separaciones.get(i).content);
+                    Separaciones.remove(i);
+                    rftg = 0;
+                    i--;
+                }
+
+            }
             System.out.println(Separaciones.get(i).content.get(0));
             //Si se repite el signo en el siguiente
             if (Separaciones.get(i).content.get(0).equalsIgnoreCase("|")) {
@@ -49,17 +64,31 @@ public class AnalizadorLexico {
                 rftg = 0;
             }
         }
+        if (Separaciones.get(Separaciones.size() - 1).content.get(0).equalsIgnoreCase("Ɛ") && Separaciones.get(Separaciones.size() - 1).content.size() == 1) {
+            System.out.println("Se removio:" + Separaciones.get(Separaciones.size() - 1).content);
+            Separaciones.remove(Separaciones.size() - 1);
+            System.out.println("Se removio:" + Separaciones.get(Separaciones.size() - 1).content);
+            Separaciones.remove(Separaciones.size() - 1);
+        }
+
+        System.out.println("=== CASI FINAL XD ===\n");
+        System.out.println("LISTO PARA SU RESOLUCIÓN");
+        for (int i = 0; i < Separaciones.size(); i++) {
+            System.out.println(Separaciones.get(i).content);
+        }
+        System.out.println("\n");
         System.out.println("=========================");
         int vuelta = 0;
         while (true) {
             for (int i = vuelta; i < Separaciones.size(); i++) {
+                System.out.println("Vuelta: " + vuelta);
                 if (Separaciones.get(i).content.get(0).equals(".")) {
                     System.out.println("=======");
                     System.out.println("Cad1:" + Separaciones.get(i - 1).content);
                     System.out.println("Cad2: " + Separaciones.get(i + 1).content);
                     Separaciones.get(i + 1).content = op.concatenarCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
                     System.out.println("CONCATENAR: " + Separaciones.get(i + 1).content);
-                    vuelta += i + 2;                    
+                    vuelta = i + 2;
                     System.out.println("=======");
                     break;
                 }
@@ -69,7 +98,7 @@ public class AnalizadorLexico {
             }
         }
         System.out.println("Resultado:");
-        System.out.println(Separaciones.get(Separaciones.size()-1).content);
+        System.out.println(Separaciones.get(Separaciones.size() - 1).content);
     }
 
     public ArrayList<Derivaciones> identificarOrden(ArrayList<Token> tokensAnalizados) {
