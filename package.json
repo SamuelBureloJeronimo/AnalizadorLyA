@@ -1,0 +1,21 @@
+{
+  "name": "regular-expression",
+  "version": "1.0.0",
+  "description": "Analizador lexico de expresiones regulares, convierte una expresion regular en un lenguaje regular",
+  "main": "index.js",
+  "scripts": {
+    "ts": "npx tsc",
+    "css": "npx tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css",
+    "dev": "tsc -w && tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css --watch",
+    "dev:css": "tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css --watch",
+    "dev:ts": "tsc -w",
+    "start": "tsc && tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css"
+  },
+  "keywords": [],
+  "author": "Martin Sanchez Reyes",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
+  }
+}
