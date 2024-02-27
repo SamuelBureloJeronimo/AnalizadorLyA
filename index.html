@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>Expresiones Regulares</title>
+</head>
+
+<body class="bg-neutral-800 text-neutral-50 flex flex-col min-h-screen">
+    <header class="py-4">
+        <h1 class="text-3xl font-bold text-center">Expresiones Regulares</hheader1>
+    </header>
+
+    <main class="flex flex-1 flex-col md:flex-row p-10 gap-5 sm:gap-10">
+        <form class="flex flex-col bg-neutral-900 p-4 rounded-xl w-full md:w-1/2 lg:w-1/3 ">
+            <h2 class="text-2xl font-semibold text-center py-3">Expresión regular a Lenguaje regular</h2>
+
+            <div class="flex flex-col">
+                <label class="my-2" for="expresion">Ingrese la expresión regular</label>
+                <input class="p-2 rounded-xl bg-neutral-700" type="text" name="expresion" id="expresion"
+                    placeholder="1.$.(a|b)^{+}.x^{**}.$^{*}">
+                <span class="output"></span>
+                <p class="text-center py-2 text-lg text-red-400">Use este símbolo $ para cadena vacía (Ɛ)</p>
+            </div>
+
+
+            <!--Botones inferiores-->
+            <div class="flex flex-col mt-auto gap-2 py-2">
+                <p id="abrirModal" class="text-blue-300 py-2 hover:cursor-pointer text-center mx-auto">Necesitas Ayuda?
+                </p>
+                <button class="rounded-xl p-2 border transition-all hover:bg-green-600 bg-green-800">Resolver</button>
+                <button class="rounded-xl p-2 border transition-all hover:bg-red-600 bg-red-800">Restablecer</button>
+            </div>
+        </form>
+        <section class="bg-neutral-900 p-4 rounded-xl grid place-content-center w-full md:w-1/2 lg:w-2/3 ">
+            <span id="alert" class="text-2xl font-semibold text-center">Aquí se mostraran los resultados</span>
+            <div class="sm:overflow-y-scroll sm:max-h-[40em] overflow-x-hidden">
+                <div id="procedimiento">
+                    <div id="resultado"></div>
+                </div>
+        </section>
+    </main>
+
+
+    <!--Modal-->
+    <div id="modal" class="hidden fixed inset-0">
+        <div class="flex items-end justify-center min-h-screen pt-4 pb-20 px-4 text-center sm:block sm:p-0">
+            <!--Fondo-->
+            <div class="fixed inset-0 bg-neutral-500 bg-opacity-75"></div>
+            <!--Espaciador-->
+            <div class="hidden sm:inline-block sm:align-middle sm:h-screen">&nbsp;</div>
+            <!--Contenedor-->
+            <div
+                class="inline-block align-bottom bg-neutral-800 rounded-lg overflow-hidden text-left shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg w-full">
+                <!--Wrapper-->
+                <div class="bg-neutral-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <!--Wrapper flex-->
+                    <div class="sm:flex sm:items-start">
+                        <!--Icono-->
+                        <div
+                            class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-400 sm:mx-0 sm:h-10 sm:w-10 font-bold text-2xl">
+                            ?</div>
+                        <!--Contenido-->
+                        <div class="text-center mt-3 sm:ml-4 sm:mt-0 sm:text-left">
+                            <h3 class="text-xl font-medium mb-2">Ayuda</h3>
+                            <!--Texto-->
+                            <div class="text-sm">
+                                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non, enim. Eaque,
+                                    perspiciatis ab totam distinctio dolor tempore vero vel magni reprehenderit commodi
+                                    aliquid debitis enim aut quibusdam dolore a perferendis?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Botones-->
+                <div class="bg-neutral-700 sm:flex px-4 py-3 sm:px-6 sm:py-3 sm:flex-row-reverse">
+                    <button id="cerrarModal"
+                        class="bg-red-600 hover:bg-red-500 w-full sm:w-auto px-4 py-2 rounded-xl shadow-xl">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-auto text-sm text-center py-2">
+        <p>Instituto Tecnológico Superior de Macuspana</p>
+    </footer>
+
+    <script type="module" src="./js/index.js"></script>
+    <script>
+        //Modal
+        const modal = document.getElementById('modal');
+        const abrirModal = document.querySelector('#abrirModal');
+        const cerrarModal = document.querySelector('#cerrarModal');
+
+
+        abrirModal.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        cerrarModal.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+    </script>
+</body>
+
+</html>
