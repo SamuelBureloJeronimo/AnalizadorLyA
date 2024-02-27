@@ -4,12 +4,12 @@
   "description": "Analizador lexico de expresiones regulares, convierte una expresion regular en un lenguaje regular",
   "main": "index.js",
   "scripts": {
-    "ts": "npx tsc",
-    "css": "npx tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css",
-    "dev": "tsc -w && tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css --watch",
-    "dev:css": "tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css --watch",
+    "ts": "tsc",
+    "css": "npx tailwindcss -i ./src/css/styles.css -o ./css/styles.css",
+    "dev": "tsc -w && tailwindcss -i ./src/css/styles.css -o ./css/styles.css --watch",
+    "dev:css": "tailwindcss -i ./src/css/styles.css -o ./css/styles.css --watch",
     "dev:ts": "tsc -w",
-    "start": "tsc && tailwindcss -i ./src/css/styles.css -o ./public/css/styles.css"
+    "start": "tsc && tailwindcss -i ./src/css/styles.css -o ./css/styles.css"
   },
   "keywords": [],
   "author": "Martin Sanchez Reyes",
