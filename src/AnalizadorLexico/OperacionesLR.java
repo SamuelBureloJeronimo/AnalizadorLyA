@@ -3,9 +3,8 @@ package AnalizadorLexico;
 import AnalizadorLexico.Derivaciones;
 import java.util.ArrayList;
 
-
 public class OperacionesLR {
-    
+
     public ArrayList<String> concatenarCadenas(ArrayList<String> cad1, ArrayList<String> cad2) {
         ArrayList<String> result = new ArrayList();
         if (cad1.isEmpty()) {
@@ -41,17 +40,17 @@ public class OperacionesLR {
      * 
      */
     public ArrayList<Derivaciones> resolver1erOrden(ArrayList<Token> arr, String exp) {
-        //Elimina los parentesis de inicio y del final
+//Elimina los parentesis de inicio y del final
         arr.remove(0);
         arr.remove(arr.size() - 1);
-
         AnalizadorLexico anl = new AnalizadorLexico();
         ArrayList<Derivaciones> result = anl.identificarOrden(arr);
-        System.out.println("Lenght: " + result.size());
 
         if (!exp.equals("")) {
+
             System.out.println("Namas Expongo y ya. de DRIVARCION:");
             int vuelta = 0;
+            int uniones = 0;
             while (true) {
                 for (int i = vuelta; i < result.size(); i++) {
                     System.out.println("Entro al For.");
@@ -62,6 +61,7 @@ public class OperacionesLR {
                         result.get(i + 1).content = UnirCadenas(result.get(i - 1).content, result.get(i + 1).content);
                         System.out.println("UNION: " + result.get(i + 1).content);
                         vuelta += i + 2;
+                        uniones++;
                         break;
                     } else if (result.get(i).content.get(0).equals(".")) {
                         System.out.println("Cad1" + result.get(i - 1).content);
@@ -76,12 +76,21 @@ public class OperacionesLR {
                     break;
                 }
             }
-            Derivaciones der = new Derivaciones();
-            der.content = resolver2doOrden(result.get(0).content, exp);
-            result.set(0, der);
-            System.out.println("RESULTADO:" + der.content);
-            return result;
-
+            if (uniones == 1) {
+                Derivaciones der = new Derivaciones();
+                der.content = exp2doOrdenUnion(result.get(0).content, exp);
+                result.set(0, der);
+                System.out.println("Es una union");
+                System.out.println("RESULTADO:" + der.content);
+                return result;
+            } else {
+                Derivaciones der = new Derivaciones();
+                der.content = resolver2doOrden(result.get(result.size()-1).content, exp);
+                result.set(0, der);
+                System.out.println("No es una union");
+                System.out.println("RESULTADO:" + der.content);
+                return result;
+            }
         } else {
             if (result.size() == 1) {
                 System.out.println("Resultado de DRIVARCION:");
@@ -150,6 +159,40 @@ public class OperacionesLR {
             }
             return result;
         }
+    }
+
+    public ArrayList<String> exp2doOrdenUnion(ArrayList<String> idents, String tipo) {
+        System.out.println("Esta es una OP U");
+        ArrayList<String> result = new ArrayList();
+        ArrayList<String> tmp = resolver2doOrden(idents.get(0), tipo);
+        ArrayList<String> tmp2 = resolver2doOrden(idents.get(1), tipo);
+        for (int j = 0; j < tmp.size(); j++) {
+            result.add(tmp.get(j));
+        }
+        for (int j = 0; j < tmp2.size(); j++) {
+            result.add(tmp2.get(j));
+        }
+        tmp.add(idents.get(0)+idents.get(1));
+        tmp2.add(idents.get(1)+idents.get(0));
+        
+        tmp.add(tmp.get(0)+tmp.get(tmp.size()-1));
+        tmp2.add(tmp2.get(0)+tmp2.get(tmp2.size()-1));
+        
+        tmp.add(tmp.get(tmp.size()-2)+tmp.get(0));
+        tmp2.add(tmp2.get(tmp2.size()-2)+tmp2.get(0));
+        
+        tmp.add(tmp.get(0)+tmp2.get(1));
+        tmp2.add(tmp2.get(0)+tmp.get(1));
+        
+        System.out.println("Idents: " + idents);
+        System.out.println("Temp: " + tmp);
+        System.out.println("Temp2: " + tmp2);
+        
+        for (int i = 0; i < tmp2.size(); i++) {
+            tmp.add(tmp2.get(i));
+        }
+        
+        return tmp;
     }
 
     public ArrayList<String> resolver2doOrden(ArrayList<String> idents, String tipo) {

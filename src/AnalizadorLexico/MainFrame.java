@@ -235,7 +235,7 @@ public class MainFrame extends javax.swing.JFrame {
         resultado.setEditable(false);
         resultado.setBackground(new java.awt.Color(204, 204, 204));
         resultado.setColumns(20);
-        resultado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        resultado.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         resultado.setForeground(new java.awt.Color(0, 0, 0));
         resultado.setLineWrap(true);
         resultado.setRows(5);
@@ -305,7 +305,7 @@ public class MainFrame extends javax.swing.JFrame {
         AnalizadorLexico al = new AnalizadorLexico();
         
         String resultadoFinal = al.solucionFinal(al.identificarOrden(al.analizarCadena(expresion))).toString();
-        resultadoFinal = "L(r) = " + resultadoFinal.replace("[", "{").replace("]", ", ...}");
+        resultadoFinal = "L(r) = " + resultadoFinal.replace("[", "{").replace("]", ", ...}").replace("Ɛ, ", "");
         
         expresionRegular.setText("r = " + expresion);
         resultado.setText(resultadoFinal.toString());
