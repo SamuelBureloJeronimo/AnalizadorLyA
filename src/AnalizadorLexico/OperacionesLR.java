@@ -5,18 +5,7 @@ import java.util.ArrayList;
 
 
 public class OperacionesLR {
-
-    /*
-    public ArrayList<String> resolver1erOrden(ArrayList<Token> cad){
-        ArrayList<String> result = new ArrayList();
-        
-    }
-    public ArrayList<String> resolver2doOrden(ArrayList<Token> cad){
-        ArrayList<String> result = new ArrayList();
-        
-    }*/
-    static ArrayList<Derivaciones> arr = new ArrayList();
-
+    
     public ArrayList<String> concatenarCadenas(ArrayList<String> cad1, ArrayList<String> cad2) {
         ArrayList<String> result = new ArrayList();
         if (cad1.isEmpty()) {
@@ -163,29 +152,6 @@ public class OperacionesLR {
         }
     }
 
-    private int searchIndex(ArrayList<String> tokensAnalizados, int p_a, int p_c, int index) {
-        if (p_a == p_c) { //Cuando ya se cerraron todos los parentesis se apertura y de cierre
-            //verifica si tiene un exponente al final
-            if (index < tokensAnalizados.size()) {
-                if (tokensAnalizados.get(index).substring(0, 1).equalsIgnoreCase("^")) {
-                    return index;
-                }
-            }
-            return index - 1;
-            //Cuando se encuentra un "("
-        } else if (tokensAnalizados.get(index).equals("(")) {
-            //System.out.println("p_a");
-            return searchIndex(tokensAnalizados, p_a + 1, p_c, index + 1);
-            //Cuando se encuentra un "("
-        } else if (tokensAnalizados.get(index).equals(")")) {
-            //System.out.println("p_c");
-            return searchIndex(tokensAnalizados, p_a, p_c + 1, index + 1);
-        } else {
-            //System.out.println("-----");
-            return searchIndex(tokensAnalizados, p_a, p_c, index + 1);
-        }
-    }
-
     public ArrayList<String> resolver2doOrden(ArrayList<String> idents, String tipo) {
         ArrayList<String> result = new ArrayList();
         for (int i = 0; i < idents.size(); i++) {
@@ -198,7 +164,7 @@ public class OperacionesLR {
     }
 
     public ArrayList<String> resolver2doOrden(String ident, String tipo) {
-        int MAX_ELEM = 4;
+        int MAX_ELEM = 3;
         ArrayList<String> result = new ArrayList();
         String sum = "";
         if (ident.equalsIgnoreCase("Ɛ")) {
