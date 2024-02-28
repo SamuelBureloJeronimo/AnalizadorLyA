@@ -14,6 +14,7 @@ public class AnalizadorLexico {
 
     ArrayList<Derivaciones> Separaciones = new ArrayList();
     OperacionesLR op = new OperacionesLR();
+    String analisisLexico = "";
 
     public ArrayList<String> solucionFinal(ArrayList<Derivaciones> Separaciones) {
         System.out.println("== Eliminar las cadenas vacías ==");
@@ -73,29 +74,41 @@ public class AnalizadorLexico {
         System.out.println("\n");
         System.out.println("=========================");
         int vuelta = 0;
-        while (true) {
-            for (int i = vuelta; i < Separaciones.size(); i++) {
-                System.out.println("Vuelta: " + vuelta);
-                if (Separaciones.get(i).content.get(0).equals(".")) {
-                    System.out.println("=======");
-                    System.out.println("Cad1:" + Separaciones.get(i - 1).content);
-                    System.out.println("Cad2: " + Separaciones.get(i + 1).content);
-                    Separaciones.get(i + 1).content = op.concatenarCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
-                    System.out.println("CONCATENAR: " + Separaciones.get(i + 1).content);
-                    vuelta = i + 2;
-                    System.out.println("=======");
+        if (Separaciones.size() != 1) {
+            while (true) {
+                for (int i = vuelta; i < Separaciones.size(); i++) {
+                    System.out.println("Vuelta: " + vuelta);
+                    if (Separaciones.get(i).content.get(0).equals(".")) {
+                        System.out.println("=======");
+                        System.out.println("Cad1:" + Separaciones.get(i - 1).content);
+                        System.out.println("Cad2: " + Separaciones.get(i + 1).content);
+                        Separaciones.get(i + 1).content = op.concatenarCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
+                        System.out.println("CONCATENAR: " + Separaciones.get(i + 1).content);
+                        vuelta = i + 2;
+                        System.out.println("=======");
+                        break;
+                    } else if (Separaciones.get(i).content.get(0).equals("|")) {
+                        System.out.println("=======");
+                        System.out.println("Cad1:" + Separaciones.get(i - 1).content);
+                        System.out.println("Cad2: " + Separaciones.get(i + 1).content);
+                        Separaciones.get(i + 1).content = op.UnirCadenas(Separaciones.get(i - 1).content, Separaciones.get(i + 1).content);
+                        System.out.println("UNIR: " + Separaciones.get(i + 1).content);
+                        vuelta = i + 2;
+                        System.out.println("=======");
+                        break;
+                    }
+                }
+                if (vuelta >= Separaciones.size()) {
                     break;
                 }
             }
-            if (vuelta >= Separaciones.size()) {
-                break;
-            }
         }
+
         System.out.println("Resultado:");
         System.out.println(Separaciones.get(Separaciones.size() - 1).content);
-        
+
         System.out.println("\n\nFinal");
-        
+
         return Separaciones.get(Separaciones.size() - 1).content;
     }
 
@@ -224,12 +237,14 @@ public class AnalizadorLexico {
     //Inicializa todos los componentes
     public ArrayList<Token> analizarCadena(String cadena) {
         ArrayList<Token> tokensAnalizados = new ArrayList();
+        analisisLexico = "==== ANALIZADOR LÉXICO ====\n";
         System.out.println("==== ANALIZADOR LÉXICO By Samuel Burelos Jerónimo ====\n");
         while (cadena.length() > 0) {
             String c = cadena.substring(0, 1);
             if (c.matches("[0-9]*") || c.matches("[A-Z]*") || c.matches("[a-z]*")) {
 
                 String ident = c + searchNextAZ_09(cadena.substring(1));
+                analisisLexico += "\n<Identificador>     " + ident;
                 System.out.println("<Identificador>     " + ident);
                 tokensAnalizados.add(new Token(ident, "Identificador"));
                 cadena = cadena.substring(ident.length());
@@ -238,6 +253,7 @@ public class AnalizadorLexico {
                 if (cadena.length() > 1 && c.equals("^")) {
                     String lt = cadena.substring(1, 2);
                     if (lt.equals("*") || lt.equals("+")) {
+                        analisisLexico += "\n<Operador>     " + cadena.substring(0, 2);
                         System.out.println("<Operador>          " + cadena.substring(0, 2));
                         tokensAnalizados.add(new Token(cadena.substring(0, 2), "Operador"));
                         if (cadena.length() > 2 && cadena.substring(2, 3).equals("*")) {
@@ -249,6 +265,7 @@ public class AnalizadorLexico {
 
                         String ident = c + searchNextAZ_09(cadena.substring(1));
                         System.out.println("<Operador>          " + ident);
+                        analisisLexico += "\n<Operador>     " + ident;
                         tokensAnalizados.add(new Token(ident, "Operador"));
                         cadena = cadena.substring(ident.length());
 
@@ -258,19 +275,23 @@ public class AnalizadorLexico {
 
                 } else if (c.equals("(") || c.equals(")")) {
                     tokensAnalizados.add(new Token(c, "Agrupador"));
+                    analisisLexico += "\n<Agrupador>     " + c;
                     System.out.println("<Agrupador>         " + c);
                     cadena = cadena.substring(1);
                 } else if (c.equals("|") || c.equals(".")) {
                     tokensAnalizados.add(new Token(c, "Operador"));
+                    analisisLexico += "\n<Operador>     " + c;
                     System.out.println("<Operador>          " + c);
                     cadena = cadena.substring(1);
                 } else if (c.equals("Ɛ")) {
                     tokensAnalizados.add(new Token("Ɛ", "Constante"));
                     System.out.println("<Constante>         " + c);
+                    analisisLexico += "\n<Constante>     " + c;
                     cadena = cadena.substring(1);
                 } else {
                     tokensAnalizados.add(new Token(c, "No identificado"));
-                    System.out.println("<DESCONOCIDO>        " + c);
+                    System.out.println("\n<DESCONOCIDO>        " + c);
+                    analisisLexico += "<Desconocido>     " + c;
                     cadena = cadena.substring(1);
                 }
 
