@@ -136,6 +136,7 @@ public class MainFrame extends javax.swing.JFrame {
         resultado.setColumns(20);
         resultado.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         resultado.setForeground(new java.awt.Color(255, 255, 255));
+        resultado.setLineWrap(true);
         resultado.setRows(5);
         jScrollPane1.setViewportView(resultado);
 
