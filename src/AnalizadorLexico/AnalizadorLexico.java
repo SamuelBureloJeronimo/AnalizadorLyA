@@ -244,8 +244,8 @@ public class AnalizadorLexico {
             if (c.matches("[0-9]*") || c.matches("[A-Z]*") || c.matches("[a-z]*")) {
 
                 String ident = c + searchNextAZ_09(cadena.substring(1));
-                analisisLexico += "\n<Identificador>     " + ident;
-                System.out.println("<Identificador>     " + ident);
+                analisisLexico += "\n<Identificador>       " + ident;
+                System.out.println("<Identificador>       " + ident);
                 tokensAnalizados.add(new Token(ident, "Identificador"));
                 cadena = cadena.substring(ident.length());
 
@@ -253,8 +253,8 @@ public class AnalizadorLexico {
                 if (cadena.length() > 1 && c.equals("^")) {
                     String lt = cadena.substring(1, 2);
                     if (lt.equals("*") || lt.equals("+")) {
-                        analisisLexico += "\n<Operador>     " + cadena.substring(0, 2);
-                        System.out.println("<Operador>          " + cadena.substring(0, 2));
+                        analisisLexico += "\n<Operador>           " + cadena.substring(0, 2);
+                        System.out.println("<Operador>                " + cadena.substring(0, 2));
                         tokensAnalizados.add(new Token(cadena.substring(0, 2), "Operador"));
                         if (cadena.length() > 2 && cadena.substring(2, 3).equals("*")) {
                             cadena = cadena.substring(3);
@@ -264,8 +264,8 @@ public class AnalizadorLexico {
                     } else if (lt.matches("[0-9]*")) {
 
                         String ident = c + searchNextAZ_09(cadena.substring(1));
-                        System.out.println("<Operador>          " + ident);
-                        analisisLexico += "\n<Operador>     " + ident;
+                        System.out.println("<Operador>                " + ident);
+                        analisisLexico += "\n<Operador>           " + ident;
                         tokensAnalizados.add(new Token(ident, "Operador"));
                         cadena = cadena.substring(ident.length());
 
@@ -275,23 +275,23 @@ public class AnalizadorLexico {
 
                 } else if (c.equals("(") || c.equals(")")) {
                     tokensAnalizados.add(new Token(c, "Agrupador"));
-                    analisisLexico += "\n<Agrupador>     " + c;
-                    System.out.println("<Agrupador>         " + c);
+                    analisisLexico += "\n<Agrupador>           " + c;
+                    System.out.println("<Agrupador>               " + c);
                     cadena = cadena.substring(1);
                 } else if (c.equals("|") || c.equals(".")) {
                     tokensAnalizados.add(new Token(c, "Operador"));
-                    analisisLexico += "\n<Operador>     " + c;
-                    System.out.println("<Operador>          " + c);
+                    analisisLexico += "\n<Operador>           " + c;
+                    System.out.println("<Operador>                " + c);
                     cadena = cadena.substring(1);
                 } else if (c.equals("Ɛ")) {
                     tokensAnalizados.add(new Token("Ɛ", "Constante"));
-                    System.out.println("<Constante>         " + c);
-                    analisisLexico += "\n<Constante>     " + c;
+                    System.out.println("<Constante>               " + c);
+                    analisisLexico += "\n<Constante>           " + c;
                     cadena = cadena.substring(1);
                 } else {
                     tokensAnalizados.add(new Token(c, "No identificado"));
-                    System.out.println("\n<DESCONOCIDO>        " + c);
-                    analisisLexico += "<Desconocido>     " + c;
+                    System.out.println("\n<DESCONOCIDO>              " + c);
+                    analisisLexico += "<Desconocido>           " + c;
                     cadena = cadena.substring(1);
                 }
 

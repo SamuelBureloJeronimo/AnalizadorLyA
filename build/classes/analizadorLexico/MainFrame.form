@@ -153,10 +153,10 @@
         <Component class="javax.swing.JTextField" name="entrada">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="40" green="40" red="40" type="rgb"/>
+              <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+              <Color blue="0" green="0" red="0" type="rgb"/>
             </Property>
           </Properties>
         </Component>
@@ -252,11 +252,14 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="=== Cracteres especiales ==="/>
+            <Property name="text" type="java.lang.String" value="=== Caracteres especiales ==="/>
           </Properties>
         </Component>
         <Component class="java.awt.Button" name="button2">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="MS Reference Sans Serif" size="12" style="1"/>
+            </Property>
             <Property name="label" type="java.lang.String" value="Cerradura de Kleene"/>
           </Properties>
           <Events>
@@ -265,6 +268,9 @@
         </Component>
         <Component class="java.awt.Button" name="button3">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="MS Reference Sans Serif" size="12" style="1"/>
+            </Property>
             <Property name="label" type="java.lang.String" value="Cerradura positiva"/>
           </Properties>
           <Events>
@@ -273,6 +279,9 @@
         </Component>
         <Component class="java.awt.Button" name="button4">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="MS Reference Sans Serif" size="12" style="1"/>
+            </Property>
             <Property name="label" type="java.lang.String" value="Operador de UNI&#xd3;N"/>
           </Properties>
           <Events>
@@ -281,6 +290,9 @@
         </Component>
         <Component class="java.awt.Button" name="button5">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="MS Reference Sans Serif" size="12" style="1"/>
+            </Property>
             <Property name="label" type="java.lang.String" value="Operador de CONCATENACI&#xd3;N"/>
           </Properties>
           <Events>
@@ -289,6 +301,9 @@
         </Component>
         <Component class="java.awt.Button" name="button6">
           <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="MS Reference Sans Serif" size="12" style="1"/>
+            </Property>
             <Property name="label" type="java.lang.String" value="Exponenciaci&#xf3;n"/>
           </Properties>
           <AccessibilityProperties>
@@ -319,16 +334,16 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="expresionRegular" min="-2" pref="474" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="99" max="-2" attributes="0"/>
-                          <Component id="label2" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace pref="118" max="32767" attributes="0"/>
+                          <Component id="jScrollPane1" max="32767" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="jScrollPane2" min="-2" pref="259" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" attributes="0">
-                          <Component id="jScrollPane1" max="32767" attributes="0"/>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Component id="jScrollPane2" min="-2" pref="329" max="-2" attributes="0"/>
-                          <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                          <Component id="expresionRegular" min="-2" pref="474" max="-2" attributes="0"/>
+                          <EmptySpace pref="142" max="32767" attributes="0"/>
+                          <Component id="label2" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="75" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -338,7 +353,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="1" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="expresionRegular" min="-2" max="-2" attributes="0"/>
                       <Component id="label2" min="-2" max="-2" attributes="0"/>
                   </Group>
@@ -413,7 +428,6 @@
                 </Property>
                 <Property name="lineWrap" type="boolean" value="true"/>
                 <Property name="rows" type="int" value="5"/>
-                <Property name="text" type="java.lang.String" value="..."/>
                 <Property name="toolTipText" type="java.lang.String" value=""/>
               </Properties>
             </Component>

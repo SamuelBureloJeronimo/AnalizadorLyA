@@ -68,8 +68,8 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Ingrese la expresión regular");
 
-        entrada.setBackground(new java.awt.Color(64, 64, 64));
-        entrada.setForeground(new java.awt.Color(255, 255, 255));
+        entrada.setBackground(new java.awt.Color(255, 255, 255));
+        entrada.setForeground(new java.awt.Color(0, 0, 0));
 
         jPanel3.setBackground(new java.awt.Color(23, 23, 23));
         jPanel3.setLayout(new java.awt.BorderLayout(10, 10));
@@ -113,8 +113,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         label1.setForeground(new java.awt.Color(255, 255, 0));
-        label1.setText("=== Cracteres especiales ===");
+        label1.setText("=== Caracteres especiales ===");
 
+        button2.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
         button2.setLabel("Cerradura de Kleene");
         button2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -122,6 +123,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        button3.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
         button3.setLabel("Cerradura positiva");
         button3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -129,6 +131,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        button4.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
         button4.setLabel("Operador de UNIÓN");
         button4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -136,6 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        button5.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
         button5.setLabel("Operador de CONCATENACIÓN");
         button5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -143,6 +147,7 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        button6.setFont(new java.awt.Font("MS Reference Sans Serif", 1, 12)); // NOI18N
         button6.setLabel("Exponenciación");
         button6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -248,7 +253,6 @@ public class MainFrame extends javax.swing.JFrame {
         resultado1.setForeground(new java.awt.Color(0, 204, 153));
         resultado1.setLineWrap(true);
         resultado1.setRows(5);
-        resultado1.setText("...");
         resultado1.setToolTipText("");
         jScrollPane2.setViewportView(resultado1);
 
@@ -264,21 +268,21 @@ public class MainFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(expresionRegular, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(99, 99, 99)
-                        .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(118, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(22, 22, 22))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap())
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(expresionRegular, javax.swing.GroupLayout.PREFERRED_SIZE, 474, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
+                        .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(75, 75, 75))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(expresionRegular)
                     .addComponent(label2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -306,7 +310,6 @@ public class MainFrame extends javax.swing.JFrame {
         expresionRegular.setText("r = " + expresion);
         resultado.setText(resultadoFinal.toString());
         resultado1.setText(al.analisisLexico);
-        System.out.println(al.analisisLexico);
     }//GEN-LAST:event_resolverActionPerformed
 
     private void reestablecerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reestablecerActionPerformed
